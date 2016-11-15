@@ -9,17 +9,18 @@ require './output_helper'
 class Machine
   include OutputHelper
 
-  attr_accessor :memory_tape, :state_machine, :status, :step_counter
+  attr_accessor :memory_tape, :state_machine, :status, :step_counter, :speed
 
   # memory_tape (memory_tape object) is the turing machines tape, instantiated once with two positive integers
   # state_machine (state_machine object) is the turing machines state machine, instantiated once without params
   # status (symbol) is the current status of the machine: :working means calculations in progress, :failure means
   # that something went wrong, :success means that the result has been calculated
-  def initialize(multiplicand, multiplier)
+  def initialize(multiplicand, multiplier, speed)
     @memory_tape = MemoryTape.new(multiplicand.to_i, multiplier.to_i)
     @state_machine = StateMachine.new
     @status = :working
     @step_counter = 0
+    @speed = speed.to_sym
 
     start
     finish(multiplicand, multiplier)
@@ -30,6 +31,7 @@ class Machine
   # while the status is :working, the machine continuously applies the next rule based on the current read char
   def start
     while @status == :working
+      sleep(calculate_speed)
       print_memory_tape(@memory_tape)
       print_current_status(@state_machine, @memory_tape, next_rule)
       @status = next_step
@@ -72,12 +74,24 @@ class Machine
   def next_rule
     @state_machine.current_state.find_rule(@memory_tape.current_cell.value)
   end
+
+  # returns the number of seconds set by speed
+  def calculate_speed
+    case @speed
+      when :fast
+        0
+      when :slow
+        1
+      else
+        0.5
+    end
+  end
 end
 
 # execute from console
-if ARGV.size == 2
-  Machine.new(ARGV[0], ARGV[1])
+if ARGV.size == 3
+  Machine.new(ARGV[0], ARGV[1], ARGV[2])
 else
   puts 'Wrong number of arguments.'
-  puts 'Correct usage: ruby machine.rb MULTIPLICAND MULTIPLIER'
+  puts 'Correct usage: ruby machine.rb MULTIPLICAND MULTIPLIER SPEED<slow-medium-fast>'
 end
