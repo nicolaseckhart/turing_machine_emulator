@@ -9,7 +9,7 @@ require './output_helper'
 class Machine
   include OutputHelper
 
-  attr_accessor :memory_tape, :state_machine, :status
+  attr_accessor :memory_tape, :state_machine, :status, :step_counter
 
   # memory_tape (memory_tape object) is the turing machines tape, instantiated once with two positive integers
   # state_machine (state_machine object) is the turing machines state machine, instantiated once without params
@@ -19,6 +19,7 @@ class Machine
     @memory_tape = MemoryTape.new(multiplicand.to_i, multiplier.to_i)
     @state_machine = StateMachine.new
     @status = :working
+    @step_counter = 0
 
     start
     finish(multiplicand, multiplier)
@@ -32,13 +33,14 @@ class Machine
       print_memory_tape(@memory_tape)
       print_current_status(@state_machine, @memory_tape, next_rule)
       @status = next_step
+      @step_counter += 1
     end
   end
 
   # once the status is no longer :working, this method prints out a message for :success or :failure
   def finish(multiplicand, multiplier)
     if @status == :success
-      print_success_message(multiplicand, multiplier, @memory_tape.result)
+      print_success_message(multiplicand, multiplier, @memory_tape.result, @step_counter)
     elsif @status == :failure
       print_failure_message
     end

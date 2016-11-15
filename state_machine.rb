@@ -9,36 +9,36 @@ class StateMachine
   def initialize
     @states = [
         State.new(:q0, false, [
-            Rule.new(1, 'B', :right, :q1),
-            Rule.new(0, 'B', :right, :q6)
+            Rule.new(Cell::ELEMENT_VALUE, Cell::BLANK_VALUE, :right, :q1),
+            Rule.new(Cell::DELIMITER_VALUE, Cell::BLANK_VALUE, :right, :q6)
         ]),
         State.new(:q1, false, [
-            Rule.new(1, 1, :right, :q1),
-            Rule.new(0, 0, :right, :q2)
+            Rule.new(Cell::ELEMENT_VALUE, Cell::ELEMENT_VALUE, :right, :q1),
+            Rule.new(Cell::DELIMITER_VALUE, Cell::DELIMITER_VALUE, :right, :q2)
         ]),
         State.new(:q2, false, [
-            Rule.new(1, 'X', :right, :q3),
-            Rule.new(0, 0, :left, :q5)
+            Rule.new(Cell::ELEMENT_VALUE, Cell::PLACEHOLDER_VALUE, :right, :q3),
+            Rule.new(Cell::DELIMITER_VALUE, Cell::DELIMITER_VALUE, :left, :q5)
         ]),
         State.new(:q3, false, [
-            Rule.new(0, 0, :right, :q3),
-            Rule.new(1, 1, :right, :q3),
-            Rule.new('B', 1, :left, :q4)
+            Rule.new(Cell::DELIMITER_VALUE, Cell::DELIMITER_VALUE, :right, :q3),
+            Rule.new(Cell::ELEMENT_VALUE, Cell::ELEMENT_VALUE, :right, :q3),
+            Rule.new(Cell::BLANK_VALUE, Cell::ELEMENT_VALUE, :left, :q4)
         ]),
         State.new(:q4, false, [
-            Rule.new(1, 1, :left, :q4),
-            Rule.new(0, 0, :left, :q4),
-            Rule.new('X', 'X', :right, :q2)
+            Rule.new(Cell::ELEMENT_VALUE, Cell::ELEMENT_VALUE, :left, :q4),
+            Rule.new(Cell::DELIMITER_VALUE, Cell::DELIMITER_VALUE, :left, :q4),
+            Rule.new(Cell::PLACEHOLDER_VALUE, Cell::PLACEHOLDER_VALUE, :right, :q2)
         ]),
         State.new(:q5, false, [
-            Rule.new('X', 1, :left, :q5),
-            Rule.new(0, 0, :left, :q5),
-            Rule.new(1, 1, :left, :q5),
-            Rule.new('B', 'B', :right, :q0)
+            Rule.new(Cell::PLACEHOLDER_VALUE, Cell::ELEMENT_VALUE, :left, :q5),
+            Rule.new(Cell::DELIMITER_VALUE, Cell::DELIMITER_VALUE, :left, :q5),
+            Rule.new(Cell::ELEMENT_VALUE, Cell::ELEMENT_VALUE, :left, :q5),
+            Rule.new(Cell::BLANK_VALUE, Cell::BLANK_VALUE, :right, :q0)
         ]),
         State.new(:q6, false, [
-            Rule.new(1, 'B', :right, :q6),
-            Rule.new(0, 'B', :right, :q7)
+            Rule.new(Cell::ELEMENT_VALUE, Cell::BLANK_VALUE, :right, :q6),
+            Rule.new(Cell::DELIMITER_VALUE, Cell::BLANK_VALUE, :right, :q7)
         ]),
         State.new(:q7, true, [])
     ]

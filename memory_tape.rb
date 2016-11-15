@@ -9,13 +9,13 @@ class MemoryTape
 
   def initialize(multiplicand, multiplier)
     # create STARTING_TAPE_SIZE amount of cells in array all with blank value
-    @cells = (1..STARTING_TAPE_SIZE).map { Cell.new('B') }
+    @cells = (1..STARTING_TAPE_SIZE).map { Cell.new(Cell::BLANK_VALUE) }
     insert_input_value(multiplicand, multiplier)
   end
 
   # returns the result of the multiplication as an integer
   def result
-    @cells.map { |cell| cell if cell.value != 'B' }.compact.count
+    @cells.map { |cell| cell if cell.value != Cell::BLANK_VALUE }.compact.count
   end
 
   # moves the head and updates the current_cell
@@ -34,7 +34,7 @@ class MemoryTape
   def to_s
     summary = "\n#{tape_border}"
     summary += "\n#{machine_head}"
-    summary += "\n|#{cells_to_print.map { |cell| cell.value == 'B' ? ' ' : cell.value }.join('|')}|"
+    summary += "\n|#{cells_to_print.map { |cell| cell.value == Cell::BLANK_VALUE ? ' ' : cell.value }.join('|')}|"
     summary += "\n#{tape_border}\n"
   end
 
@@ -46,19 +46,19 @@ class MemoryTape
 
     multiplicand.times do
       starting_position += 1
-      @cells[starting_position] = Cell.new(1)
+      @cells[starting_position] = Cell.new(Cell::ELEMENT_VALUE)
     end
 
     starting_position += 1
-    @cells[starting_position] = Cell.new(0)
+    @cells[starting_position] = Cell.new(Cell::DELIMITER_VALUE)
 
     multiplier.times do
       starting_position += 1
-      @cells[starting_position] = Cell.new(1)
+      @cells[starting_position] = Cell.new(Cell::ELEMENT_VALUE)
     end
 
     starting_position += 1
-    @cells[starting_position] = Cell.new(0)
+    @cells[starting_position] = Cell.new(Cell::DELIMITER_VALUE)
 
     @current_cell = @cells[(STARTING_TAPE_SIZE / 2)]
   end
@@ -71,9 +71,9 @@ class MemoryTape
     range_start = 0
     range_end = @cells.size - 1
     @cells.each_with_index do |cell, index|
-      if (cell.value != 'B') && (range_start == 0)
+      if (cell.value != Cell::BLANK_VALUE) && (range_start == 0)
         range_start = index - DISPLAY_BUFFER_CELLS
-      elsif (cell.value == 'B') && (@cells[index-1].value != 'B')
+      elsif (cell.value == Cell::BLANK_VALUE) && (@cells[index-1].value != Cell::BLANK_VALUE)
         range_end = index + (DISPLAY_BUFFER_CELLS-1)
       end
     end
@@ -81,7 +81,7 @@ class MemoryTape
   end
 
   def only_blank_cells?
-    @cells.map { |cell| cell if cell.value == 'B' }.compact.count == @cells.count
+    @cells.map { |cell| cell if cell.value == Cell::BLANK_VALUE }.compact.count == @cells.count
   end
 
   def machine_head
