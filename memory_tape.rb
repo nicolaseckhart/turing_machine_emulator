@@ -65,6 +65,9 @@ class MemoryTape
 
   # subset of the cells array that contains the cells that need to be displayed
   def cells_to_print
+    if only_blank_cells?
+      return @cells[(@cells.index(@current_cell)-15..@cells.index(@current_cell)+15)]
+    end
     range_start = 0
     range_end = @cells.size - 1
     @cells.each_with_index do |cell, index|
@@ -75,6 +78,10 @@ class MemoryTape
       end
     end
     @cells[(range_start..range_end)]
+  end
+
+  def only_blank_cells?
+    @cells.map { |cell| cell if cell.value == 'B' }.compact.count == @cells.count
   end
 
   def machine_head

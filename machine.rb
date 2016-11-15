@@ -4,7 +4,6 @@ require './rule'
 require './memory_tape'
 require './output_helper'
 
-# TODO: FIX TAPE OUTPUT WHEN MULTIPLICAND OR MULTIPLIER ARE 0
 # TODO: IMPLEMENT ALL-IN-ONE MODE
 
 class Machine
