@@ -1,5 +1,5 @@
-require './cell'
-require './rule'
+require_relative '../state_machine/rule'
+require_relative 'cell'
 
 class MemoryTape
   STARTING_TAPE_SIZE=1000       # (integer) defining the starting size of the memory tape

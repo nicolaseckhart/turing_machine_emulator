@@ -1,38 +1,57 @@
-require './helpers/output_helper'
-require './state_machine'
-require './state'
-require './rule'
-require './memory_tape'
-
-# TODO: IMPLEMENT ALL-IN-ONE MODE
+require_relative 'helpers/output_helper'
+require_relative 'state_machine/state_machine'
+require_relative 'state_machine/state'
+require_relative 'state_machine/rule'
+require_relative 'memory_tape/memory_tape'
 
 class Machine
   include OutputHelper
 
-  attr_accessor :memory_tape, :state_machine, :status, :step_counter, :speed
+  attr_accessor :memory_tape, :state_machine, :status, :step_counter, :multiplicand, :multiplier
 
   # memory_tape (memory_tape object) is the turing machines tape, instantiated once with two positive integers
   # state_machine (state_machine object) is the turing machines state machine, instantiated once without params
   # status (symbol) is the current status of the machine: :working means calculations in progress, :failure means
   # that something went wrong, :success means that the result has been calculated
-  def initialize(multiplicand, multiplier, speed)
-    @memory_tape = MemoryTape.new(multiplicand.to_i, multiplier.to_i)
+  def initialize(multiplicand, multiplier, mode, speed=nil)
+    @multiplicand = multiplicand
+    @multiplier = multiplier
+
+    @memory_tape = MemoryTape.new(multiplicand, multiplier)
     @state_machine = StateMachine.new
     @status = :working
     @step_counter = 0
-    @speed = speed.to_sym
 
-    start
-    finish(multiplicand, multiplier)
+    if mode == :full
+      start_full
+    elsif mode == :step
+      start_step(speed)
+    end
+    finish
   end
 
   private
 
   # while the status is :working, the machine continuously applies the next rule based on the current read char
-  def start
+  # outputs a summary after all calculations have been run
+  def start_full
+    print_program_header(@multiplicand, @multiplier)
+    print_memory_tape(@memory_tape)
+    print_current_status(@state_machine, @memory_tape, next_step)
     while @status == :working
-      sleep(calculate_speed)
-      system 'clear'
+      @status = next_step
+      @step_counter += 1
+    end
+    print_memory_tape(@memory_tape)
+    print_current_status(@state_machine, @memory_tape, next_rule)
+  end
+
+  # while the status is :working, the machine continuously applies the next rule based on the current read char
+  # outputs a summary during each step of the calculation
+  def start_step(speed)
+    while @status == :working
+      sleep calculate_speed(speed)
+      print_program_header(@multiplicand, @multiplier)
       print_memory_tape(@memory_tape)
       print_current_status(@state_machine, @memory_tape, next_rule)
       @status = next_step
@@ -41,9 +60,9 @@ class Machine
   end
 
   # once the status is no longer :working, this method prints out a message for :success or :failure
-  def finish(multiplicand, multiplier)
+  def finish
     if @status == :success
-      print_success_message(multiplicand, multiplier, @memory_tape.result, @step_counter)
+      print_success_message(@multiplicand, @multiplier, @memory_tape.result, @step_counter)
     elsif @status == :failure
       print_failure_message
     end
@@ -51,8 +70,8 @@ class Machine
 
   # executes on step of the machine (check if success / failure, read input, write char, change state and move head)
   def next_step
-    rule = next_rule
     current_cell_index = @memory_tape.cells.index(@memory_tape.current_cell)
+    rule = next_rule
 
     if rule.nil?
       if @state_machine.current_state.accepting
@@ -77,8 +96,8 @@ class Machine
   end
 
   # returns the number of seconds set by speed
-  def calculate_speed
-    case @speed
+  def calculate_speed(speed)
+    case speed
       when :fast
         0
       when :slow
@@ -87,12 +106,4 @@ class Machine
         0.25
     end
   end
-end
-
-# execute from console
-if ARGV.size == 3
-  Machine.new(ARGV[0], ARGV[1], ARGV[2])
-else
-  puts 'Wrong number of arguments.'
-  puts 'Correct usage: ruby machine.rb MULTIPLICAND MULTIPLIER SPEED<slow-medium-fast>'
 end

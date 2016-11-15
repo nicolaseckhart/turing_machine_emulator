@@ -1,4 +1,4 @@
-require './rule'
+require_relative 'rule'
 
 class State
   attr_accessor :identifier, :accepting, :rules

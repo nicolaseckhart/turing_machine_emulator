@@ -1,5 +1,5 @@
-require './state'
-require './rule'
+require_relative 'state'
+require_relative 'rule'
 
 class StateMachine
   attr_accessor :states, :current_state
