@@ -1,8 +1,8 @@
+require './helpers/output_helper'
 require './state_machine'
 require './state'
 require './rule'
 require './memory_tape'
-require './output_helper'
 
 # TODO: IMPLEMENT ALL-IN-ONE MODE
 
@@ -32,6 +32,7 @@ class Machine
   def start
     while @status == :working
       sleep(calculate_speed)
+      system 'clear'
       print_memory_tape(@memory_tape)
       print_current_status(@state_machine, @memory_tape, next_rule)
       @status = next_step
@@ -81,9 +82,9 @@ class Machine
       when :fast
         0
       when :slow
-        1
+        0.75
       else
-        0.5
+        0.25
     end
   end
 end
