@@ -3,6 +3,8 @@
 A turing machine emulator coded in ruby that can perform multiplications of
 positive integers. The emulated machine only uses one memory tape.
 
+Class diagram and state machine diagram are found in /diagrams.
+
 ## Installation
 
 ```
