@@ -2,7 +2,7 @@ require_relative '../state_machine/rule'
 require_relative 'cell'
 
 class MemoryTape
-  STARTING_TAPE_SIZE=1000       # (integer) defining the starting size of the memory tape
+  STARTING_TAPE_SIZE=10000       # (integer) defining the starting size of the memory tape
   DISPLAY_BUFFER_CELLS=15       # (integer) how many empty cells should be displayed around the filled cells
 
   attr_accessor :cells, :current_cell
