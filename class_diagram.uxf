@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>13</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>988</x>
+      <y>169</y>
+      <w>117</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>Cell
+--
+-value: char
+--
+#initialize()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>663</x>
+      <y>169</y>
+      <w>260</w>
+      <h>221</h>
+    </coordinates>
+    <panel_attributes>MemoryTape
+--
+-cells: Cell[]
+-current_cell: Cell
+--
+#initialize()
+#result(): int
+#move_head()
+#overwrite_cell()
+--
+can also prints tape to console
+can also put values on tape</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>312</x>
+      <y>143</y>
+      <w>260</w>
+      <h>299</h>
+    </coordinates>
+    <panel_attributes>Machine
+--
+-memory_tape: MemoryTape
+-state_machine: StateMachine
+-status: Symbol
+-step_counter: int
+-multiplicand: int
+-multiplier: int
+--
+#initialize()
+#next_step(): Symbol
+#next_rule(): Rule
+#start_full()
+#start_step()
+#finish()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>988</x>
+      <y>611</y>
+      <w>195</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>Rule
+--
+-input: char
+-write: char
+-direction: Symbol
+-target_state: Symbol
+--
+#initialize()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>988</x>
+      <y>429</y>
+      <w>195</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>State
+--
+-identifier: Symbol
+-accepting: boolean
+-rules: Rule[]
+--
+#initialize()
+#find_rule(): Rule</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>663</x>
+      <y>429</y>
+      <w>260</w>
+      <h>156</h>
+    </coordinates>
+    <panel_attributes>StateMachine
+--
+-states: State[]
+-current_state: State
+--
+#initialize()
+#find_state(): State
+#update_current_state()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>559</x>
+      <y>169</y>
+      <w>130</w>
+      <h>39</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>559</x>
+      <y>195</y>
+      <w>130</w>
+      <h>273</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>80.0;190.0;40.0;190.0;40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>910</x>
+      <y>195</y>
+      <w>104</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=m</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>910</x>
+      <y>455</y>
+      <w>104</w>
+      <h>52</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=m</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1170</x>
+      <y>507</y>
+      <w>78</w>
+      <h>195</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=m</panel_attributes>
+    <additional_attributes>10.0;120.0;40.0;120.0;40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>
