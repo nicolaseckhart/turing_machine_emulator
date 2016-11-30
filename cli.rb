@@ -50,10 +50,6 @@ def request_decimal_input
   { multiplicand: multiplicand, multiplier: multiplier }
 end
 
-def request_multiplier
-
-end
-
 def request_mode
   mode = :invalid
   while mode == :invalid
@@ -87,18 +83,19 @@ def request_speed
 end
 
 input_mode = request_input_mode
-
 if input_mode == :decimal
-  multiplicand = request_multiplicand
-  multiplier = request_multiplier
-  mode = request_mode
-
-  if mode == :step
-    speed = request_speed
-    Machine.new(multiplicand, multiplier, mode, speed)
-  else
-    Machine.new(multiplicand, multiplier, mode)
-  end
+  input = request_decimal_input
 elsif input_mode == :unary
-  raise 'NOT IMPLEMENTED'
+  input = request_unary_input
+end
+
+multiplicand = input[:multiplicand]
+multiplier = input[:multiplier]
+mode = request_mode
+
+if mode == :step
+  speed = request_speed
+  Machine.new(multiplicand, multiplier, mode, speed)
+else
+  Machine.new(multiplicand, multiplier, mode)
 end

@@ -41,6 +41,7 @@ class MemoryTape
   private
 
   # writes the input (multiplicand and multiplier) onto the tape and sets the current cell
+  # example for 5x6 = 0000010000001
   def insert_input_value(multiplicand, multiplier)
     starting_position = (STARTING_TAPE_SIZE / 2) - 1
 
