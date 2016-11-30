@@ -26,15 +26,21 @@ end
 def request_unary_input
   clear_screen
   print 'Please enter the multiplicand and multiplier in this format 3x2 = 000100: '
-  unary_input = gets.strip.split('1')
+  unary_input = gets.strip.split('1').reject(&:empty?)
 
-  multiplicand = unary_input[0].split('').count
-  puts "-> Multiplicand #{multiplicand} chosen."
+  if unary_input.size == 0
+    { multiplicand: 0, multiplier: 0 }
+  elsif unary_input.size == 1
+    { multiplicand: 0, multiplier: unary_input[0].split('').count }
+  else
+    multiplicand = unary_input[0].split('').count
+    puts "-> Multiplicand #{multiplicand} chosen."
 
-  multiplier = unary_input[0].split('').count
-  puts "-> Multiplier #{multiplier} chosen."
+    multiplier = unary_input[0].split('').count
+    puts "-> Multiplier #{multiplier} chosen."
 
-  { multiplicand: multiplicand, multiplier: multiplier }
+    { multiplicand: multiplicand, multiplier: multiplier }
+  end
 end
 
 def request_decimal_input
