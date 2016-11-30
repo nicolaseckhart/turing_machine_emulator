@@ -32,6 +32,33 @@ class Machine
 
   private
 
+  # executes on step of the machine (check if success / failure, read input, write char, change state and move head)
+  def next_step
+    current_cell_index = @memory_tape.cells.index(@memory_tape.current_cell)
+    rule = next_rule
+
+    if rule.nil?
+      if @state_machine.current_state.accepting
+        # return status success if in accepting state and no further movement possible
+        return :success
+      else
+        # return status failure if not in accepting state and no further movement possible
+        return :failure
+      end
+    end
+
+    @state_machine.update_current_state(rule)
+    @memory_tape.move_head(rule)
+    @memory_tape.overwrite_cell(current_cell_index, rule)
+
+    :working
+  end
+
+  # gets the next rule that will be applied
+  def next_rule
+    @state_machine.current_state.find_rule(@memory_tape.current_cell.value)
+  end
+
   # while the status is :working, the machine continuously applies the next rule based on the current read char
   # outputs a summary after all calculations have been run
   def start_full
@@ -66,33 +93,6 @@ class Machine
     elsif @status == :failure
       print_failure_message
     end
-  end
-
-  # executes on step of the machine (check if success / failure, read input, write char, change state and move head)
-  def next_step
-    current_cell_index = @memory_tape.cells.index(@memory_tape.current_cell)
-    rule = next_rule
-
-    if rule.nil?
-      if @state_machine.current_state.accepting
-        # return status success if in accepting state and no further movement possible
-        return :success
-      else
-        # return status failure if not in accepting state and no further movement possible
-        return :failure
-      end
-    end
-
-    @state_machine.update_current_state(rule)
-    @memory_tape.move_head(rule)
-    @memory_tape.overwrite_cell(current_cell_index, rule)
-
-    :working
-  end
-
-  # gets the next rule that will be applied
-  def next_rule
-    @state_machine.current_state.find_rule(@memory_tape.current_cell.value)
   end
 
   # returns the number of seconds set by speed
