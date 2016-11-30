@@ -16,9 +16,9 @@ module OutputHelper
     puts "\nSOMETHING WENT WRONG...\n\n"
   end
 
-  def print_success_message(multiplicand, multiplier, result, step_counter)
-    puts "\nCALCULATION SUCCESSFULLY COMPLETED!\nTHE RESULT OF #{multiplicand}x#{multiplier} is #{result}\n"\
-         "NUMBER CALCULATIONS: #{step_counter}.\n\n"
+  def print_success_message(multiplicand, multiplier, result, step_counter, duration)
+    puts "\nTHE RESULT OF #{multiplicand}x#{multiplier} is #{result}\n"\
+         "NUMBER CALCULATIONS: #{step_counter} (TOOK #{duration} SECONDS TO RUN).\n\n"
   end
 
   def print_memory_tape(memory_tape)

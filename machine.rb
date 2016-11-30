@@ -22,12 +22,13 @@ class Machine
     @status = :working
     @step_counter = 0
 
+    start_time = Time.now
     if mode == :full
       start_full
     elsif mode == :step
       start_step(speed)
     end
-    finish
+    finish(Time.now - start_time)
   end
 
   private
@@ -87,9 +88,9 @@ class Machine
   end
 
   # once the status is no longer :working, this method prints out a message for :success or :failure
-  def finish
+  def finish(duration)
     if @status == :success
-      print_success_message(@multiplicand, @multiplier, @memory_tape.result, @step_counter)
+      print_success_message(@multiplicand, @multiplier, @memory_tape.result, @step_counter, duration)
     elsif @status == :failure
       print_failure_message
     end

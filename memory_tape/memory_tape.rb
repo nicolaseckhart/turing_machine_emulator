@@ -66,19 +66,7 @@ class MemoryTape
 
   # subset of the cells array that contains the cells that need to be displayed
   def cells_to_print
-    if only_blank_cells?
-      return @cells[(@cells.index(@current_cell)-15..@cells.index(@current_cell)+15)]
-    end
-    range_start = 0
-    range_end = @cells.size - 1
-    @cells.each_with_index do |cell, index|
-      if (cell.value != Cell::BLANK_VALUE) && (range_start == 0)
-        range_start = index - DISPLAY_BUFFER_CELLS
-      elsif (cell.value == Cell::BLANK_VALUE) && (@cells[index-1].value != Cell::BLANK_VALUE)
-        range_end = index + (DISPLAY_BUFFER_CELLS-1)
-      end
-    end
-    @cells[(range_start..range_end)]
+    @cells[(@cells.index(@current_cell)-15..@cells.index(@current_cell)+15)]
   end
 
   def only_blank_cells?

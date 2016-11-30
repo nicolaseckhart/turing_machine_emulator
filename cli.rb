@@ -25,7 +25,7 @@ end
 
 def request_unary_input
   clear_screen
-  print 'Please enter the multiplicand and multiplier in this format 3x2 = 000100'
+  print 'Please enter the multiplicand and multiplier in this format 3x2 = 000100: '
   unary_input = gets.strip.split('1')
 
   multiplicand = unary_input[0].split('').count
