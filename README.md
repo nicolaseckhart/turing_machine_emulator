@@ -3,6 +3,12 @@
 A turing machine emulator coded in ruby that can perform multiplications of
 positive integers. The emulated machine only uses one memory tape.
 
+## Installation
+
+```
+git clone git@github.com:nicolaseckhart/turing_machine_emulator.git
+```
+
 ## Usage
 
 ### Requirements
