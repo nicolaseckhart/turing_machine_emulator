@@ -49,8 +49,8 @@ class Machine
     end
 
     @state_machine.update_current_state(rule)
-    @memory_tape.move_head(rule)
-    @memory_tape.overwrite_cell(current_cell_index, rule)
+    @memory_tape.move_head((rule.direction == :left ? -1 : 1), current_cell_index)
+    @memory_tape.overwrite_cell(rule, current_cell_index)
 
     :working
   end
@@ -66,10 +66,12 @@ class Machine
     print_program_header(@multiplicand, @multiplier)
     print_memory_tape(@memory_tape)
     print_current_status(@state_machine, @memory_tape, next_step)
+
     while @status == :working
       @status = next_step
       @step_counter += 1
     end
+
     print_memory_tape(@memory_tape)
     print_current_status(@state_machine, @memory_tape, next_rule)
   end

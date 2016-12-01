@@ -2,8 +2,8 @@ require_relative '../state_machine/rule'
 require_relative 'cell'
 
 class MemoryTape
-  STARTING_TAPE_SIZE=10000       # (integer) defining the starting size of the memory tape
-  DISPLAY_BUFFER_CELLS=15       # (integer) how many empty cells should be displayed around the filled cells
+  STARTING_TAPE_SIZE=1000       # (integer) defining the starting size of the memory tape
+  DISPLAY_BUFFER_CELLS=20       # (integer) how many empty cells should be displayed around the filled cells
 
   attr_accessor :cells, :current_cell
 
@@ -19,14 +19,12 @@ class MemoryTape
   end
 
   # moves the head and updates the current_cell
-  def move_head(rule)
-    direction = rule.direction == :left ? -1 : 1
-    current_cell_index = @cells.index(@current_cell)
-    @current_cell = @cells[current_cell_index + direction]
+  def move_head(direction, index)
+    @current_cell = @cells[index + direction]
   end
 
   # overwrites the value of a cell at a given index based on a given rule
-  def overwrite_cell(index, rule)
+  def overwrite_cell(rule, index)
     @cells[index].value = rule.write
   end
 
@@ -66,7 +64,7 @@ class MemoryTape
 
   # subset of the cells array that contains the cells that need to be displayed
   def cells_to_print
-    @cells[(@cells.index(@current_cell)-15..@cells.index(@current_cell)+15)]
+    @cells[(@cells.index(@current_cell)-DISPLAY_BUFFER_CELLS..@cells.index(@current_cell)+DISPLAY_BUFFER_CELLS)]
   end
 
   def only_blank_cells?
