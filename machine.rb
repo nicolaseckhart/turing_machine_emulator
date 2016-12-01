@@ -81,7 +81,7 @@ class Machine
   def start_step(speed)
     while @status == :working
       sleep calculate_speed(speed)
-      print_program_header(@multiplicand, @multiplier)
+      print_program_header(@multiplicand, @multiplier) if speed == :slow
       print_memory_tape(@memory_tape)
       print_current_status(@state_machine, @memory_tape, next_rule)
       @status = next_step
